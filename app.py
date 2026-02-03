@@ -25,9 +25,9 @@ CORS(app, resources={
 # Azure OpenAI Configuration from environment variables
 AZURE_API_KEY = os.getenv('AZURE_API_KEY')
 AZURE_ENDPOINT = os.getenv('AZURE_ENDPOINT', 'https://syed-ml6sh5lt-eastus2.cognitiveservices.azure.com/')
-DEPLOYMENT_NAME = os.getenv('DEPLOYMENT_NAME', 'gpt-5.2-chat')
-API_VERSION = os.getenv('API_VERSION', '2024-12-01-preview')
-MAX_COMPLETION_TOKENS = int(os.getenv('MAX_COMPLETION_TOKENS', '500'))
+DEPLOYMENT_NAME = os.getenv('DEPLOYMENT_NAME', 'gpt-4o')
+API_VERSION = os.getenv('API_VERSION', '2024-08-01-preview')
+MAX_TOKENS = int(os.getenv('MAX_TOKENS', '500'))
 TEMPERATURE = float(os.getenv('TEMPERATURE', '1.0'))
 
 # System Prompt for CloudNerve Sales Agent
@@ -197,7 +197,9 @@ def chat():
         messages.append({'role': 'user', 'content': user_message})
         
         # Call Azure OpenAI API
-        url = f"{AZURE_ENDPOINT}openai/deployments/{DEPLOYMENT_NAME}/chat/completions?api-version={API_VERSION}"
+        # Ensure endpoint ends with /
+        endpoint = AZURE_ENDPOINT if AZURE_ENDPOINT.endswith('/') else f"{AZURE_ENDPOINT}/"
+        url = f"{endpoint}openai/deployments/{DEPLOYMENT_NAME}/chat/completions?api-version={API_VERSION}"
         
         headers = {
             'Content-Type': 'application/json',
@@ -206,9 +208,8 @@ def chat():
         
         payload = {
             'messages': messages,
-            'max_completion_tokens': MAX_COMPLETION_TOKENS,
+            'max_tokens': MAX_TOKENS,
             'temperature': TEMPERATURE,
-            'top_p': 0.95,
             'frequency_penalty': 0,
             'presence_penalty': 0
         }
