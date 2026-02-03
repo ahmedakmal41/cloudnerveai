@@ -27,7 +27,7 @@ AZURE_API_KEY = os.getenv('AZURE_API_KEY')
 AZURE_ENDPOINT = os.getenv('AZURE_ENDPOINT', 'https://syed-ml6sh5lt-eastus2.cognitiveservices.azure.com/')
 DEPLOYMENT_NAME = os.getenv('DEPLOYMENT_NAME', 'gpt-4o')
 API_VERSION = os.getenv('API_VERSION', '2024-08-01-preview')
-MAX_TOKENS = int(os.getenv('MAX_TOKENS', '500'))
+MAX_COMPLETION_TOKENS = int(os.getenv('MAX_COMPLETION_TOKENS', '500'))
 TEMPERATURE = float(os.getenv('TEMPERATURE', '1.0'))
 
 # System Prompt for CloudNerve Sales Agent
@@ -208,7 +208,7 @@ def chat():
         
         payload = {
             'messages': messages,
-            'max_tokens': MAX_TOKENS,
+            'max_completion_tokens': MAX_COMPLETION_TOKENS,
             'temperature': TEMPERATURE,
             'frequency_penalty': 0,
             'presence_penalty': 0
